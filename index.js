@@ -28,24 +28,54 @@ const parLinks = (file) => {
         }
     })
 } 
-console.log(parLinks(link));
+//console.log(parLinks(link));
 
 const validarlinks = (arraylinks) => {
-    for (let i = 0; i < arraylinks.length; i++){
+    let promesa = arraylinks.map((elem) => {
+        return fetch(elem)
+    })
+    Promise.all(promesa)
+    .then((data) => {
+
+    })
+    
         fetch(arraylinks[i])
         .then((res) => {
-            //console.log(res.status);
             if(res.status <= 400) {
-                console.log(`ES VALIDO ${link} ${arraylinks[i]}`)    
+                listGood.push(`ES VALIDO ${link} ${arraylinks[i]}`)
+                //console.log(`ES VALIDO ${link} ${arraylinks[i]}`)
+                console.log(listGood); 
             } else {
-                console.log(`NO ES VALIDO ${link} ${arraylinks[i]}`);
+                listBad.push(`ES no es VALIDO ${link} ${arraylinks[i]}`)
+                //console.log(`NO ES VALIDO ${link} ${arraylinks[i]}`)
+                //console.log(listBad);
             }
         })
        .catch((error) => {
         console.log('Tenia un error ');
        })
-       
-       
+    }
+    /*
+    Promises.all(listGood)
+        .then(result => {
+        console.log(result);
+    })
+    
+    console.log(listGood);
+    //console.log(listBad);
+    */
+
+}
+
+const validarFlags = () => {
+    if(flags == --validate) {
+        console.log();
+    } else if ( flags == --stats) {
+        console.log()
+    } else if ( flags == --stas && process.argv[4] == --validate) {
+        console.log();
+    } else {
+
     }
 }
 
