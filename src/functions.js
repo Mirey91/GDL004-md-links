@@ -8,7 +8,7 @@ const buscarLinks = (file) => {
     return fs.promises.readFile(file, 'utf8')
         .then((data) => {
             let arrayObj = [];
-            const expression = /\[(.*)\]\((http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))\)/gm;
+            const expression = /\[(.*)\](\(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)\))/gm;
             const textExpression = /\[(.*)\]\((.*)\)/;
             const regex = new RegExp(expression);
             const matchlinks = data.match(regex);
@@ -18,7 +18,7 @@ const buscarLinks = (file) => {
                 let objLink = {
                     text: textBreak[1],
                     url: textBreak[2],
-                    flie: file
+                    file: file
                 }
                 arrayObj.push(objLink)
             }
@@ -30,49 +30,27 @@ const buscarLinks = (file) => {
 }
 
 const validarLinks = (arraylinks) => {
-    console.log(arraylinks);
-    
-    /*
-    let promesa = arraylinks.map((elem) => {
-
-        //console.log("validarLink");
-        console.log(elem);
-
-        return fetch(elem)
-           // .then(resp => resp.text())
-    })
-    
-
-    Promise.all(promesa)
-        .then((data) => {
-
-            let listGood = []
-            let listBad = []
-            for (let i = 0; i < data.length; i++) {
-                const linkInfo = data[i]
-
-                console.log(linkInfo);
-                /*
-                    if(res.status <= 400) {
-                        listGood.push(`ES VALIDO ${link} ${arraylinks[i]}`)
-                        //console.log(`ES VALIDO ${link} ${arraylinks[i]}`)
-                        //console.log(listGood); 
-                    } else {
-                        listBad.push(`ES no es VALIDO ${link} ${arraylinks[i]}`)
-                        //console.log(`NO ES VALIDO ${link} ${arraylinks[i]}`)
-                        //console.log(listBad);
-                    }
-                    
-            }
-            //console.log(listGood);
-
-        }).catch((error) => {
-            console.log(error)
-        })
-
-    //console.log(listGood);
-    */
+    //console.log(arraylinks);
+    return Promise.all(arraylinks.map( async url => {
+        try{
+            const statusUrl = await fetch(url.href)
+           // console.log(statusUrl);
+            url['status'] = statusUrl.status
+            return url
+        }
+        catch (error){
+            //console.log(error);
+            url['status'] = error.code;
+                return url;
+            
+        }
+    }))
+    //return newArrayLinks
+    //return validarLinks
 }
+
+
+
 
 
 module.exports = {
