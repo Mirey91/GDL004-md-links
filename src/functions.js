@@ -17,7 +17,7 @@ const buscarLinks = (file) => {
                 //console.log(textBreak);
                 let objLink = {
                     text: textBreak[1],
-                    url: textBreak[2],
+                    href: textBreak[2],
                     file: file
                 }
                 arrayObj.push(objLink)
@@ -34,16 +34,12 @@ const validarLinks = (arraylinks) => {
     return Promise.all(arraylinks.map( async url => {
         try{
             const statusUrl = await fetch(url.href)
-           // console.log(statusUrl);
-            url['status'] = statusUrl.status
-            return url
+            url['status'] = statusUrl.status;
         }
         catch (error){
-            //console.log(error);
             url['status'] = error.code;
-                return url;
-            
         }
+        return url;
     }))
     //return newArrayLinks
     //return validarLinks
