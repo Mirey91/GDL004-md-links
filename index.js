@@ -1,4 +1,4 @@
-const { validarFile, validarLinks, buscarLinks } = require('./src/functions');
+const { validarFile, validarLinks, buscarLinks, validarStats } = require('./src/functions');
 
 //
 const mdLinks = (file, options) => {

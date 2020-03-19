@@ -45,6 +45,21 @@ const validarLinks = (arraylinks) => {
     //return validarLinks
 }
 
+const validarStats = (statuslink) => {
+    let objConteo = {
+        bueno: 0,
+        roto: 0,
+        Total: statuslink.length
+    }
+    for(let i=0; i<statuslink.length;i++){
+        if(statuslink[i].status <= 400){
+            objConteo.bueno++
+        }else{
+            objConteo.roto++
+        }
+    } return Object
+}
+
 
 
 
@@ -52,5 +67,6 @@ const validarLinks = (arraylinks) => {
 module.exports = {
     validarFile,
     buscarLinks,
-    validarLinks
+    validarLinks,
+    validarStats
 }
